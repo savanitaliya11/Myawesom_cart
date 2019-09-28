@@ -6,15 +6,20 @@ from math import ceil
 
 
 def index(request):
-    p = Product.objects.all()
-    print(p)
-    n = len(p)
-    nSlides = n // 4 + ceil((n / 4) - (n // 4))
-    # consider n=4 then,n//4 = 1 + ceil((n/4 = 1)-(n//4 = 1)) = 0 then no. of slides is 1
-    # consider n=5 n//5 = 1.25 consider(1) + ceil((1.25)-(1)) = 1.25 consider (2 because 1.25
-    # is o/p of ceil)then oyr no. of slides is 2
-    dict = {'no.of slides': nSlides, 'range': (1, nSlides), 'product': p}
-    return render(request, 'shop/index.html', dict)
+    allProds = []
+    catprods = Product.objects.values('product_desc', 'id')
+    cats = {item['product_desc'] for item in catprods}
+    for cat in cats:
+        prod = Product.objects.filter(product_desc=cat)
+        n = len(prod)
+        nSlides = n // 4 + ceil((n / 4) - (n // 4))
+        allProds.append([prod, range(1, nSlides), nSlides])
+
+    # params = {'no_of_slides':nSlides, 'range': range(1,nSlides),'product': products}
+    # allProds = [[products, range(1, nSlides), nSlides],
+    #             [products, range(1, nSlides), nSlides]]
+    params = {'allProds': allProds}
+    return render(request, 'shop/index.html', params)
 
 
 def about(request):
