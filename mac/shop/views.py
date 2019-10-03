@@ -22,24 +22,24 @@ def index(request):
     return render(request, 'shop/index.html', params)
 
 
+def contact(request):
+    return render(request, 'shop/contact.html')
+
+
 def about(request):
     return render(request, 'shop/about.html')
 
 
-def contact(request):
-    return HttpResponse("Hey there,this is contact")
-
-
 def tracker(request):
-    return HttpResponse("Hey there,this is tracker")
+    return render(request, 'shop/tracker.html')
 
 
 def search(request):
-    return HttpResponse("Hey there,this is search")
+    return render(request, 'shop/search.html')
 
 
 def productview(request):
-    return HttpResponse("Hey there,this is p-view")
+    return render(request, 'shop/productview.html')
 
 
 def checkout(request):
