@@ -1,6 +1,33 @@
-{% extends 'shop/basic.html'%}
-{% block title%}contact us{% endblock%}
+{% extends 'shop/basic.html' %}
+{% block title%}contact!{% endblock%}
 {% block body%}
-    <h6>Mail:</h6>savanitaliya11@gmail.com
 
+<div class="container">
+    <h3>Contact us</h3>
+    <form action="/shop/contact" method="post"> {% csrf_token %}
+        <div class="form-group">
+            <label for="Name">Name</label>
+            <input type="text" class="form-control" id="name" name="name" required placeholder="Enter Your Name">
+        </div>
+        <div class="form-group">
+            <label for="Email">Email</label>
+            <input type="email" class="form-control" id="mail" name="email" required placeholder="Enter Your Email">
+        </div>
+        <div class="form-group">
+            <label for="Phone">Phone</label>
+            <input type="tel" class="form-control" id="phone" name="phone" placeholder="Enter Your Phone">
+        </div>
+        <div class="form-group">
+            <label for="desc">Descriptions</label>
+            <input type="text" class="form-control" id="desc" name="desc" required
+                   placeholder="Enter Your Descriptions">
+        </div>
+        <div class="btn">
+            <button type="submit" class="btn btn-success" name="submit">Submit</button>
+        </div>
+        <div class="btn">
+            <button type="reset" class="btn btn-success" name="reset">Reset</button>
+        </div>
+    </form>
+</div>
 {% endblock%}

@@ -1,7 +1,7 @@
 # shop/views.py
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Product
+from .models import Product, Contact
 from math import ceil
 
 
@@ -23,6 +23,14 @@ def index(request):
 
 
 def contact(request):
+
+    if request.method == 'POST':
+        name = request.POST.get('name', '')
+        email = request.POST.get('email', '')
+        phone = request.POST.get('phone', '')
+        desc = request.POST.get('desc', '')
+        cont = Contact(name=name, email=email, phone=phone, desc=desc)
+        cont.save()
     return render(request, 'shop/contact.html')
 
 
@@ -38,8 +46,9 @@ def search(request):
     return render(request, 'shop/search.html')
 
 
-def productview(request):
-    return render(request, 'shop/productview.html')
+def productview(request, myid):
+    product = Product.objects.filter(id=myid)
+    return render(request, 'shop/productview.html', {'product': product[0]})
 
 
 def checkout(request):
