@@ -1,5 +1,99 @@
 {% extends 'shop/basic.html'%}
 {% block title%}product view{% endblock%}
+{% load static %}
 {% block body%}
-    product view page
+<div class="container my-4">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="row">
+                <img src="/media/{{product.image}}" alt="" height="317px" width="314px">
+            </div>
+            <div class="row container mt-2">
+                <button id="pr{{i.id}}" class="btn btn-primary mx-2">Add to cart</button>
+                <button class="btn btn-primary">Buy Now</button>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <h5>{{product.product_name}}</h5>
+            <p>{{product.product_desc}}</p>
+            <p><b>Rs.</b>{{product.product_price}}</p>
+            <p>{{product.product_pub_date}}</p>
+
+        </div>
+        <div class="col-md-3">
+
+            <div class="card" style="width: 18rem;">
+                <img src="{%static 'shop/p.jpg'%}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h3 class="card-title">Learn Python</h3>
+                    <p class="card-text">With <B>CODELINE INFOTECH</B></B></p>
+                </div>
+                <div class="card-body">
+                    <a href="http://codelineinfotech.com">
+                        <button class="card-link">Codeline Infotech</button>
+                    </a>
+                </div>
+            </div>
+
+            <div class="card mt-3" style="width: 18rem;">
+                <img src="{%static 'shop/f.jpg'%}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h3 class="card-title">Learn Flutter</h3>
+                    <p class="card-text">With <B>CODELINE INFOTECH</B></B></p>
+                </div>
+                <div class="card-body">
+                    <a href="http://codelineinfotech.com">
+                        <button class="card-link">Codeline Infotech</button>
+                    </a>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+{% endblock%}
+{% block js %}
+<script>
+console.log('working');
+if(localStorage.getItem('cart') == null){
+var cart = {};
+}
+else
+{
+cart = JSON.parse(localStorage.getItem('cart'));
+document.getElementById('cart').innerHTML = Object.keys(cart).length;
+}
+$('.cart').click(function(){
+console.log('clicked')
+
+var idstr = this.id.toString();
+console.log(idstr);
+if(cart[idstr] != undefined){
+cart[idstr] = cart[idstr] + 1;
+}
+else
+{
+cart[idstr] = 1;
+}
+console.log(cart);
+localStorage.setItem('cart', JSON.stringify(cart));
+document.getElementById('cart').innerHTML = Object.keys(cart).length;
+});
+$('#popcart').popover()
+document.getElementById('popcart').setAttribute('data-content', '<h5>Cart for your items in my shopping cart</h5>')
+
+
+
+
+
+
+
+
+
+
+
+</script>
 {% endblock%}

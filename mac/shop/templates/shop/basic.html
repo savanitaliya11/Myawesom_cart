@@ -10,7 +10,14 @@
 
     <title>{% block title%}Hello, world!{% endblock%}</title>
     <style>
-          {% block css%}{% endblock %}
+          {% block css%}
+          .card1{
+          background-color:#EDD9E9;
+          }
+          {% endblock %}
+
+
+
 
 
 
@@ -68,7 +75,22 @@
 
     </div>
 </nav>
+
 {% block body%}{% endblock%}
+<div class="container mb-3">
+    <div class="card1">
+        <div class="card-footer">
+            Quote
+        </div>
+        <div class="card-body">
+            <blockquote class="blockquote mb-0">
+                <p>“Whoever said that money can't buy happiness simply didn't know where to go shopping.” ...</p>
+                <footer class="blockquote-footer"><b><i>Savan Italiya</i></b> <cite title="Source Title">Source Title</cite>
+                </footer>
+            </blockquote>
+        </div>
+    </div>
+</div>
 
 
 <!-- Optional JavaScript -->
