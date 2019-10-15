@@ -5,35 +5,27 @@
 display: inline-block;
 margin-left:-4px;
 }
-
 .carousel-indicators .active {
 background-color: blue;
 }
-
 .col-md-3 img{
-
 width: 255px;
 height: 300px;
 }
-
 body .carousel-indicator li{
 background-color: blue;
 }
-
 body .carousel-indicators{
 bottom: 0;
 }
-
 body .carousel-control-prev-icon,
 body .carousel-control-next-icon{
 background-color:blue;
-
 }
 .carousel-control-prev,
 .carousel-control-next{
 top: auto;
 bottom: auto;
-
 padding-top: 16px;
 }
 body .no-padding{
@@ -41,11 +33,31 @@ padding-left: 0,
 padding-right: 0;
 }
 {% endblock %}
-
 {% block body %}
 {% load static %}
-<div class="container">
+<!--<div class="row">
+    <ul class="et-social container-fluid">
 
+        <li type="none" class="et-social facebook">
+            <a class="et-fb"
+               href="https://www.facebook.com/login.php?skip_api_login=1&api_key=966242223397117&signed_next=1&next=https%3A%2F%2Fwww.facebook.com%2Fsharer.php%3Fu%3Dhttps%253A%252F%252Fbloomshower.com%26t%3Dbloomshower.com&cancel_url=https%3A%2F%2Fwww.facebook.com%2Fdialog%2Fclose_window%2F%3Fapp_id%3D966242223397117%26connect%3D0%23_%3D_&display=popup&locale=gu_IN"><img
+                    src="{% static 'shop/fb.jpg' %}" width="50px"></a>
+        </li>
+
+        <li type="none" class="et-social twitter">
+            <a class="et-tw"
+               href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fbloomshower.com&via=%40EdwinMo48989421&text=bloomshower.com&original_referer=https%3A%2F%2Fbloomshower.com%2F"><img
+                    src="{% static 'shop/twitter.jpg' %}" width="40px"> </a>
+        </li>
+        <li type="none" class="et-social wiki">
+            <a class="et-wk"
+               href="https://www.wikipedia.org/"><img
+                    src="{% static 'shop/wiki.jpg' %}" width="36px"> </a>
+        </li>
+    </ul>
+</div>
+-->
+<div class=" container" xmlns="http://www.w3.org/1999/html">
     <!--Slideshow starts here -->
     {% for product, range, nSlides in allProds %}
     <h5 class="my-4">Flash Sale On {{product.0.product_desc}} </h5>
@@ -53,26 +65,24 @@ padding-right: 0;
         <div id="demo{{forloop.counter}}" class="col carousel slide my-3" data-ride="carousel">
             <ul class="carousel-indicators">
                 <li data-target="#demo{{forloop.counter}}" data-slide-to="0" class="active"></li>
-
                 {% for i in range %}
                 <li data-target="#demo{{forloop.parentloop.counter}}" data-slide-to="{{i}}"></li>
                 {% endfor %}
             </ul>
-
-
             <div class="container carousel-inner no-padding">
-
                 <div class="carousel-item active">
-
-
                     {% for i in product%}
                     <div class="col-xs-3 col-sm-3 col-md-3">
-                        <div class="card" style="width: 18rem;">
-                            <img src='/media/{{i.image}}' class="card-img-top" alt="...">
+                        <div class="card align item center" style="width: 18rem;">
+                            <img src='/media/{{i.image}}' class="card-img-top" alt="ntg">
                             <div class="card-body">
                                 <h5 class="card-title">{{i.product_name}}</h5>
                                 <p class="card-text">{{i.product_desc}}</p>
-                                <button id="{{i.id}}" class="btn btn-primary cart">Add To Cart</button>
+                                <span id="divpr{{i.id}}" class="divpr">
+                                    <button id="pr{{i.id}}" class="btn btn-primary cart">Add To Cart</button> </span>
+                                <a href='/shop/productview/{{i.id}}'>
+                                    <button id="qv{{i.id}}" class="btn btn-primary cart">QuickView</button>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -80,11 +90,8 @@ padding-right: 0;
                 </div>
                 <div class="carousel-item">
                     {% endif %}
-
                     {% endfor %}
                 </div>
-
-
             </div>
         </div>
         <!-- left and right controls for the slide -->
@@ -98,9 +105,9 @@ padding-right: 0;
     {% endfor %}
 </div>
 {% endblock %}
-
 {% block js %}
-<script>
+<script> 
+//find out the item from localstorage   
 console.log('working');
 if(localStorage.getItem('cart') == null){
 var cart = {};
@@ -109,10 +116,11 @@ else
 {
 cart = JSON.parse(localStorage.getItem('cart'));
 document.getElementById('cart').innerHTML = Object.keys(cart).length;
+updatecart(cart);
 }
+//if the add to cart button is clicked then add to cart is incriment or add
 $('.cart').click(function(){
 console.log('clicked')
-
 var idstr = this.id.toString();
 console.log(idstr);
 if(cart[idstr] != undefined){
@@ -122,12 +130,41 @@ else
 {
 cart[idstr] = 1;
 }
-console.log(cart);
+updatecart(cart);
 localStorage.setItem('cart', JSON.stringify(cart));
 document.getElementById('cart').innerHTML = Object.keys(cart).length;
 });
+//add popover to cart
 $('#popcart').popover()
 document.getElementById('popcart').setAttribute('data-content', '<h5>Cart for your items in my shopping cart</h5>')
+function updatecart(cart){
+for (var item in cart) {
+     document.getElementById('div' + item).innerHTML = "<button id='minus" + item + "' class='btn btn-primary minus'>-</button> <span id='val" + item + "''>" + cart[item] + "</span> <button id='plus" + item + "' class='btn btn-primary plus'> + </button>";
+    }
+}
+
+//if minus button is cliked
+
+$('.divpr').on('click','button.minus', function() {
+    console.log("minus is cliked")
+    a = this.id.slice(7, )
+    console.log(a)
+    cart['pr'+a] = cart['pr'+a] - 1;
+    cart['pr' + a] = Math.max(0, cart['pr' + a]);
+    document.getElementById('valpr'+a).innerHTML = cart['pr' + a];
+    updatecart(cart);
+});
+
+//if plus is cliked
+
+$('.divpr').on('click','button.plus', function() {
+    console.log("plus is cliked")
+    a = this.id.slice(6, )
+    cart['pr' + a] = cart['pr' + a] + 1;
+    document.getElementById('valpr' + a).innerHTML = cart['pr' + a];
+    updatecart(cart);
+
+});
 
 </script>
 {% endblock%}
